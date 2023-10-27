@@ -16,6 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\MediaFileController;
 use App\Controller\MediaFileDeleteController;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[Vich\Uploadable]
 #[ApiResource(
@@ -32,6 +34,7 @@ use App\Controller\MediaFileDeleteController;
     ]
 )]
 #[ORM\Entity(repositoryClass: MediaFileRepository::class)]
+#[ApiFilter(SearchFilter::class, properties: ['idProperty' => 'exact', 'fileType' => 'exact'])]
 class MediaFile
 {
     #[ORM\Id]
