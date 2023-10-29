@@ -34,6 +34,7 @@ final class MediaFileNormalizer implements NormalizerInterface, NormalizerAwareI
         if (isset($context[self::ALREADY_CALLED])) {
             return false;
         }
+        return false;
 
         return $data instanceof MediaFile;
     }
