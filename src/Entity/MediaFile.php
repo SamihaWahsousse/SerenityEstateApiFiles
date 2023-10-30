@@ -25,11 +25,12 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
     types: ['https://schema.org/MediaFile'],
     operations: [
         new Get(),
-        new Delete(controller: MediaFileDeleteController::class),
+        new Delete(),
         new GetCollection(),
         new Post(
             controller: MediaFileController::class,
             deserialize: false,
+            denormalizationContext: ['groups' => ['media_file:write']] 
         )
     ]
 )]
@@ -40,11 +41,11 @@ class MediaFile
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['media_file:read'])]
     private ?int $id = null;
 
     #[ApiProperty(types: ['https://schema.org/contentUrl'])]
     #[Groups(['media_file:read'])]
-    #[ORM\Column(nullable: true, length: 500)]
     private ?string $fileUrl = null;
 
     #[ORM\Column(length: 500)]
@@ -52,16 +53,18 @@ class MediaFile
 
 
     #[Vich\UploadableField(mapping: "media_file", fileNameProperty: "filePath")]
-    // #[Assert\NotNull(groups: ['media_file_create'])]
+    #[Groups(['media_file:write'])]
     public ?File $file = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['media_file:write'])]
     private ?int $idProperty = null;
 
     #[ORM\Column(length: 10, nullable: true)]
+    #[Groups(['media_file:write'])]
     private ?string $fileType = null;
 
 
@@ -87,7 +90,7 @@ class MediaFile
         return $this->filePath;
     }
 
-    public function setFilePath(string $filePath): static
+    public function setFilePath(?string $filePath): static
     {
         $this->filePath = $filePath;
 

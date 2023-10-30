@@ -1,5 +1,5 @@
 <?php
-// api/src/Serializer/MediaObjectNormalizer.php
+// src/Serializer/MediaFileNormalizer.php
 namespace App\Serializer;
 
 use App\Entity\MediaFile;
@@ -23,10 +23,11 @@ final class MediaFileNormalizer implements NormalizerInterface, NormalizerAwareI
 
     public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $context[self::ALREADY_CALLED] = true;
-        $object->setFileUrl($this->storage->resolvePath($object, 'file'));
-
-        return $this->normalizer->normalize($object, $format, $context);
+        $context[self::ALREADY_CALLED] = true;        
+        $object->setFileUrl($this->storage->resolvePath($object, 'file'));        
+        $data = $this->normalizer->normalize($object, null, $context);
+                
+        return $data;
     }
 
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
@@ -34,8 +35,6 @@ final class MediaFileNormalizer implements NormalizerInterface, NormalizerAwareI
         if (isset($context[self::ALREADY_CALLED])) {
             return false;
         }
-        return false;
-
         return $data instanceof MediaFile;
     }
 }

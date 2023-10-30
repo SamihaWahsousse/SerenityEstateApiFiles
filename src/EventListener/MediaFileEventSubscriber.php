@@ -1,16 +1,24 @@
 <?php
+namespace App\EventSubscriber;
 
-use App\Entity\MediaFile;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 
-class MediaFileEventSubscriber
+class MediaFileEventSubscriber implements EventSubscriber
 {
 
-    public function postRemove(MediaFile $image, LifecycleEventArgs $event)
+    public function getSubscribedEvents()
     {
-        dd($image->getFilePath());
+        return [
+            Events::postRemove,
+        ];
+    }
 
-        $image_path = $image->getFilePath(); // You may have to specify the full path to the file if it is not listed in the database.
+    public function postRemove(LifecycleEventArgs $args)
+    {        
+        $entity = $args->getObject();
+        $image_path = $entity->getFileUrl();
 
         if (file_exists($image_path)) {
             unlink($image_path);
