@@ -31,7 +31,8 @@ security:
             provider: app_user_provider
 
     access_control:
+        - { path: ^/public, roles: ROLE_USER }
         - { path: ^/api/register, roles: ROLE_USER }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/media_files, roles: ROLE_USER }
-        - { path: ^/api,       roles: PUBLIC_ACCESS }        
+        - { path: ^/api,       roles: PUBLIC_ACCESS }  

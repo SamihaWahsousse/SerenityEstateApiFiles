@@ -24,7 +24,7 @@ final class MediaFileNormalizer implements NormalizerInterface, NormalizerAwareI
     public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $context[self::ALREADY_CALLED] = true;        
-        $object->setFileUrl($this->storage->resolvePath($object, 'file'));        
+        $object->setFileUrl($this->storage->resolveUri($object, 'file'));        
         $data = $this->normalizer->normalize($object, null, $context);
                 
         return $data;

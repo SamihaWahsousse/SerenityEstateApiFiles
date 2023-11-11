@@ -1,5 +1,5 @@
 <?php
-namespace App\EventSubscriber;
+namespace App\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
