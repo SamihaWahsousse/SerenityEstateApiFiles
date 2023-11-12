@@ -15,13 +15,15 @@ class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'register', methods: 'post')]
     public function index(ManagerRegistry $doctrine, Request $request, UserPasswordHasherInterface $passwordHasher): JsonResponse
-    {       
+    {   
+        // Get the username and password of the user to create
         $em = $doctrine->getManager();
         $decoded = json_decode($request->getContent());
         $username = $decoded->username;
         $plaintextPassword = $decoded->password;
            
-        $user = new User();
+        // Hash the password and create the user
+        $user = new User();        
         $hashedPassword = $passwordHasher->hashPassword(
             $user,
             $plaintextPassword
@@ -31,6 +33,6 @@ class RegistrationController extends AbstractController
         $em->persist($user);
         $em->flush();
    
-        return $this->json(['message' => 'Registered Successfully']);
+        return $this->json(['message' => 'Api User registered Successfully']);
     }
 }

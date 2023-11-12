@@ -14,7 +14,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 final class MediaFileNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
-    private const ALREADY_CALLED = 'MEDIA_FILE_NORMALIZER_ALREADY_CALLED';
+    private const ALREADY_CALLED = false;
     public function __construct(
         private StorageInterface $storage,
         private UrlGeneratorInterface $router,
@@ -23,7 +23,10 @@ final class MediaFileNormalizer implements NormalizerInterface, NormalizerAwareI
 
     public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $context[self::ALREADY_CALLED] = true;        
+        // set ALREADY_CALLED to true to avoid recalling the normalizer in the same operation
+        $context[self::ALREADY_CALLED] = true;
+
+        // Set the fileUrl
         $object->setFileUrl($this->storage->resolveUri($object, 'file'));        
         $data = $this->normalizer->normalize($object, null, $context);
                 
@@ -35,6 +38,8 @@ final class MediaFileNormalizer implements NormalizerInterface, NormalizerAwareI
         if (isset($context[self::ALREADY_CALLED])) {
             return false;
         }
+
+        // Go to normalizer only if data is of type MediaFile
         return $data instanceof MediaFile;
     }
 }

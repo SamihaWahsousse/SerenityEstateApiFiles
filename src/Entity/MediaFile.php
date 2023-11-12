@@ -18,6 +18,7 @@ use App\Controller\MediaFileController;
 use App\Controller\MediaFileDeleteController;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Filter\MediaFileCustomFilter;
 
 #[Vich\Uploadable]
 #[ApiResource(
@@ -36,6 +37,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 )]
 #[ORM\Entity(repositoryClass: MediaFileRepository::class)]
 #[ApiFilter(SearchFilter::class, properties: ['idProperty' => 'exact', 'fileType' => 'exact'])]
+#[ApiFilter(MediaFileCustomFilter::class)]
 class MediaFile
 {
     #[ORM\Id]
