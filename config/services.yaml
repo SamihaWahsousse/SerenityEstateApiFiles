@@ -20,10 +20,6 @@ services:
       - "../src/Entity/"
       - "../src/Kernel.php"
 
-  App\Filter\MediaFileCustomFilter:
-    tags:
-      - { name: "api_platform.filter" }
-
   Vich\UploaderBundle\Naming\SlugNamer:
     public: true
     arguments:

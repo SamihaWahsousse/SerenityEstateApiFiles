@@ -1,6 +1,6 @@
 <?php
-// src/Serializer/MediaFileNormalizer.php
-namespace App\Serializer;
+// src/Normalizer/MediaFileNormalizer.php
+namespace App\Normalizer;
 
 use App\Entity\MediaFile;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -27,19 +27,21 @@ final class MediaFileNormalizer implements NormalizerInterface, NormalizerAwareI
         $context[self::ALREADY_CALLED] = true;
 
         // Set the fileUrl
-        $object->setFileUrl($this->storage->resolveUri($object, 'file'));        
+        $object->setFileUrl($this->storage->resolveUri($object, 'file'));
+
+        // Call default normalizer to return data from object
         $data = $this->normalizer->normalize($object, null, $context);
-                
+
         return $data;
     }
 
-    public function supportsNormalization($data, ?string $format = null, array $context = []): bool
+    public function supportsNormalization($object, ?string $format = null, array $context = []): bool
     {
-        if (isset($context[self::ALREADY_CALLED])) {
-            return false;
+         if (isset($context[self::ALREADY_CALLED])) {
+             return false;
         }
 
         // Go to normalizer only if data is of type MediaFile
-        return $data instanceof MediaFile;
-    }
+        return $object instanceof MediaFile;
+    }        
 }

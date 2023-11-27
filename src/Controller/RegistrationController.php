@@ -18,9 +18,8 @@ class RegistrationController extends AbstractController
     {   
         // Get the username and password of the user to create
         $em = $doctrine->getManager();
-        $decoded = json_decode($request->getContent());
-        $username = $decoded->username;
-        $plaintextPassword = $decoded->password;
+        $username = $request->request->get('username');
+        $plaintextPassword = $request->request->get('password');
            
         // Hash the password and create the user
         $user = new User();        

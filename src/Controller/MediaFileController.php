@@ -6,12 +6,11 @@ use App\Entity\MediaFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 class MediaFileController extends AbstractController
 {
-    public function __invoke(Request $request, SluggerInterface $slugger): MediaFile
+    public function __invoke(Request $request): MediaFile
     {        
         // Check if file is set
         $uploadedFile = $request->files->get('file');        
@@ -35,7 +34,7 @@ class MediaFileController extends AbstractController
 
         // Create a new mediaFile object
         $mediaFile = new MediaFile();
-        $mediaFile->file = $uploadedFile;
+        $mediaFile->setFile($uploadedFile);
         $mediaFile->setFileType($fileType);
         $mediaFile->setIdProperty($idProperty);
         $mediaFile->setUpdatedAt(new \DateTimeImmutable('now'));
@@ -44,3 +43,4 @@ class MediaFileController extends AbstractController
         return $mediaFile;
     }
 }
+

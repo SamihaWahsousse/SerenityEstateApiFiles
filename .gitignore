@@ -14,5 +14,5 @@
 ###< lexik/jwt-authentication-bundle ###
 
 ### media files ###
-# /media/*
+/media/*
 ### media files ###

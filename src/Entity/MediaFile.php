@@ -18,7 +18,6 @@ use App\Controller\MediaFileController;
 use App\Controller\MediaFileDeleteController;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use App\Filter\MediaFileCustomFilter;
 
 #[Vich\Uploadable]
 #[ApiResource(
@@ -31,13 +30,11 @@ use App\Filter\MediaFileCustomFilter;
         new Post(
             controller: MediaFileController::class,
             deserialize: false,
-            denormalizationContext: ['groups' => ['media_file:write']] 
         )
     ]
 )]
 #[ORM\Entity(repositoryClass: MediaFileRepository::class)]
 #[ApiFilter(SearchFilter::class, properties: ['idProperty' => 'exact', 'fileType' => 'exact'])]
-#[ApiFilter(MediaFileCustomFilter::class)]
 class MediaFile
 {
     #[ORM\Id]
@@ -55,18 +52,15 @@ class MediaFile
 
 
     #[Vich\UploadableField(mapping: "media_file", fileNameProperty: "filePath")]
-    #[Groups(['media_file:write'])]
     public ?File $file = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['media_file:write'])]
     private ?int $idProperty = null;
 
     #[ORM\Column(length: 10, nullable: true)]
-    #[Groups(['media_file:write'])]
     private ?string $fileType = null;
 
 
@@ -134,4 +128,16 @@ class MediaFile
 
         return $this;
     }
+
+    public function setFile(?File $file): static
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    public function getFile(): ?File
+    {
+        return $this->file;
+    }    
 }
