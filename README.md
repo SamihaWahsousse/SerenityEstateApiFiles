@@ -1,7 +1,7 @@
 # SerenityEstateApiFiles
 ## File Storage API
 
-This application enables you to store and get files in a manner similar to Dropbox.
+This application enables you to store and get files (pictures - files ).
 
 ## Features
 
